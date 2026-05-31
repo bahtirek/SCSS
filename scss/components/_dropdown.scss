@@ -1,0 +1,134 @@
+// =============================================================================
+// ui / components / _dropdown.scss
+// =============================================================================
+// JS controls .is-open on .dropdown.
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+.dropdown {
+  position: relative;
+  display: inline-flex;
+
+  &__menu {
+    @include surface(md);
+
+    position: absolute;
+    top: calc(100% + var(--space-xs));
+    inset-inline-start: 0;
+    index: var(--dropdown);
+
+    min-inline-size: 11rem;
+    padding-block: var(--space-xs);
+    list-style: none;
+
+    // Hidden by default
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px) scale(0.98);
+
+    @include transition(opacity visibility transform, slow);
+
+    @media (prefers-reduced-motion: reduce) {
+      transform: none;
+    }
+  }
+
+  &.is-open > &__menu,
+  &[open] > &__menu {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  // Align to the right edge
+  &--end > &__menu {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+  }
+
+  // Open above
+  &--top > &__menu {
+    top: auto;
+    bottom: calc(100% + var(--space-xs));
+    transform: translateY(4px) scale(0.98);
+  }
+
+  &__item {
+    display: flex;
+  }
+
+  &__link,
+  &__button {
+    @include interactive;
+    @include transition(background-color color);
+    @include focus-ring;
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    inline-size: 100%;
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-md);
+
+    font-size: var(--text-sm);
+    font-weight: var(--font-normal);
+    color: var(--text-primary);
+    text-decoration: none;
+
+    &:hover {
+      background-color: var(--bg-subtle);
+    }
+
+    &.is-active,
+    &[aria-checked='true'] {
+      color: var(--color-brand);
+      background-color: var(--color-brand-subtle);
+    }
+
+    &.is-danger {
+      color: var(--color-danger);
+
+      &:hover {
+        background-color: var(--color-danger-bg);
+      }
+    }
+
+    &:disabled,
+    &.is-disabled {
+      @include disabled;
+    }
+
+    &__icon {
+      inline-size: 1rem;
+      block-size: 1rem;
+      flex-shrink: 0;
+      color: var(--text-tertiary);
+    }
+
+    &__shortcut {
+      margin-inline-start: auto;
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__separator {
+    block-size: 1px;
+    background-color: var(--border-subtle);
+    margin-block: var(--space-xs);
+  }
+
+  &__label {
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-md);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+  }
+}

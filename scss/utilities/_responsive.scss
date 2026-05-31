@@ -1,0 +1,111 @@
+// =============================================================================
+// ui / utilities / _responsive.scss
+// =============================================================================
+// Generates responsive prefixed variants for key utilities.
+// Pattern: {bp}:{utility}  e.g. md:flex, lg:hidden, 2xl:grid-3
+//
+// Class names with colons are escaped in CSS:  .md\:flex
+// In HTML write them without escaping:          class="md:flex"
+//
+// Breakpoint names that start with a digit (e.g. "2xl") require an additional
+// CSS unicode escape on the leading character: .\32 xl\:flex
+// The rsel() function in core/_mixins.scss handles this automatically.
+// =============================================================================
+
+@use '../tokens/breakpoints' as *;
+@use '../tokens/spacing' as *;
+@use '../core/mixins' as m;
+@use 'sass:string';
+@use 'sass:list';
+
+// ── Responsive display ────────────────────────────────────────────────────────
+$_display-values: (block, inline-block, inline, flex, inline-flex, grid, inline-grid, none);
+
+@each $bp, $val in $breakpoints {
+  @media (min-width: $val) {
+    @each $d in $_display-values {
+      #{m.rsel($bp, $d)} { display: $d; }
+    }
+    #{m.rsel($bp, hidden)} { display: none; }
+  }
+}
+
+// ── Responsive flex utilities ─────────────────────────────────────────────────
+$_flex-utils: (
+  'flex-row':       (flex-direction, row),
+  'flex-col':       (flex-direction, column),
+  'flex-wrap':      (flex-wrap, wrap),
+  'flex-nowrap':    (flex-wrap, nowrap),
+  'items-start':    (align-items, flex-start),
+  'items-center':   (align-items, center),
+  'items-end':      (align-items, flex-end),
+  'items-stretch':  (align-items, stretch),
+  'justify-start':  (justify-content, flex-start),
+  'justify-center': (justify-content, center),
+  'justify-end':    (justify-content, flex-end),
+  'justify-between':(justify-content, space-between),
+  'grow':           (flex-grow, 1),
+  'shrink-0':       (flex-shrink, 0),
+);
+
+@each $bp, $val in $breakpoints {
+  @media (min-width: $val) {
+    @each $name, $pair in $_flex-utils {
+      $prop: list.nth($pair, 1);
+      $pval: list.nth($pair, 2);
+      #{m.rsel($bp, $name)} { #{$prop}: #{$pval}; }
+    }
+  }
+}
+
+// ── Responsive text alignment ─────────────────────────────────────────────────
+@each $bp, $val in $breakpoints {
+  @media (min-width: $val) {
+    #{m.rsel($bp, 'text-left')}   { text-align: start; }
+    #{m.rsel($bp, 'text-center')} { text-align: center; }
+    #{m.rsel($bp, 'text-right')}  { text-align: end; }
+  }
+}
+
+// ── Responsive padding ────────────────────────────────────────────────────────
+@each $bp, $bpval in $breakpoints {
+  @media (min-width: $bpval) {
+    @each $key, $spval in $spacing {
+      $s-p: 'p-#{$key}';   // → 'z-p-sm'
+      #{m.rsel($bp, $s-p)}  { padding: $spval; }
+      #{m.rsel($bp, $s-p)} { padding-inline: $spval; }
+      #{m.rsel($bp, $s-p)} { padding-block: $spval; }
+    }
+  }
+}
+
+// ── Responsive margin ─────────────────────────────────────────────────────────
+@each $bp, $bpval in $breakpoints {
+  @media (min-width: $bpval) {
+    @each $key, $spval in $spacing {
+      #{m.rsel($bp, 'm-#{$key}')}  { margin: $spval; }
+      #{m.rsel($bp, 'mx-#{$key}')} { margin-inline: $spval; }
+      #{m.rsel($bp, 'my-#{$key}')} { margin-block: $spval; }
+    }
+    #{m.rsel($bp, 'mx-auto')} { margin-inline: auto; }
+  }
+}
+
+// ── Responsive width ──────────────────────────────────────────────────────────
+$_widths: (full: 100%, auto: auto, screen: 100vw, fit: fit-content);
+
+@each $bp, $bpval in $breakpoints {
+  @media (min-width: $bpval) {
+    @each $key, $w in $_widths {
+      #{m.rsel($bp, 'w-#{$key}')} { inline-size: $w; }
+    }
+  }
+}
+
+// ── Responsive visibility ─────────────────────────────────────────────────────
+@each $bp, $bpval in $breakpoints {
+  @media (min-width: $bpval) {
+    #{m.rsel($bp, visible)}   { visibility: visible; }
+    #{m.rsel($bp, invisible)} { visibility: hidden; }
+  }
+}

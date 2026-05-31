@@ -1,0 +1,162 @@
+// =============================================================================
+// ui / components / _table.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border-default);
+  border-radius: var(--component-radius);
+  box-shadow: var(--shadow-xs);
+}
+
+.table {
+  inline-size: 100%;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+
+  // ── Head ──────────────────────────────────────────────────────────────────
+  thead {
+    background-color: var(--bg-subtle);
+    border-block-end: 1px solid var(--border-default);
+  }
+
+  th {
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-md);
+    font-weight: var(--font-semibold);
+    color: var(--text-secondary);
+    text-align: start;
+    white-space: nowrap;
+
+    &[aria-sort='ascending']::after  { content: ' ↑'; color: var(--color-brand); }
+    &[aria-sort='descending']::after { content: ' ↓'; color: var(--color-brand); }
+  }
+
+  // ── Body ──────────────────────────────────────────────────────────────────
+  tbody {
+    tr {
+      border-block-end: 1px solid var(--border-subtle);
+
+      &:last-child { border-block-end: none; }
+
+      &:hover {
+        background-color: var(--bg-subtle);
+      }
+
+      &.is-selected {
+        background-color: var(--color-brand-subtle);
+      }
+
+      &.is-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+  }
+
+  td {
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-md);
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+
+  // ── Foot ──────────────────────────────────────────────────────────────────
+  tfoot {
+    background-color: var(--bg-subtle);
+    border-block-start: 1px solid var(--border-default);
+
+    td {
+      font-weight: var(--font-medium);
+      color: var(--text-secondary);
+    }
+  }
+
+  // ── Modifiers ─────────────────────────────────────────────────────────────
+
+  &--striped {
+    tbody tr:nth-child(even) {
+      background-color: var(--bg-subtle);
+    }
+  }
+
+  &--bordered {
+    td, th {
+      border: 1px solid var(--border-subtle);
+    }
+  }
+
+  &--compact {
+    td, th {
+      padding-block: var(--space-xs);
+      padding-inline: var(--space-sm);
+    }
+  }
+
+  &--relaxed {
+    td, th {
+      padding-block: var(--space-md);
+      padding-inline: var(--space-lg);
+    }
+  }
+
+  // ── Column alignment helpers ───────────────────────────────────────────────
+  .col-num  { text-align: end; font-variant-numeric: tabular-nums; }
+  .col-mono { font-family: var(--font-mono); }
+}
+
+// ── Table action cell ─────────────────────────────────────────────────────────
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  justify-content: flex-end;
+}
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+
+  &__info {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-inline-end: var(--space-sm);
+  }
+
+  &__btn {
+    @include interactive;
+    @include focus-ring;
+    @include transition(background-color color);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    inline-size: 2rem;
+    block-size: 2rem;
+
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+
+    &:hover {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    &.is-active {
+      background-color: var(--color-brand);
+      color: var(--text-on-brand);
+    }
+
+    &:disabled,
+    &.is-disabled {
+      @include disabled;
+    }
+  }
+}

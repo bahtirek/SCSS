@@ -1,0 +1,66 @@
+// =============================================================================
+// z-ui / core / _root.scss
+// =============================================================================
+// Single source of all CSS custom property declarations.
+// Token maps live in tokens/ as SCSS variables (no CSS output there).
+// Semantic color vars are given real values by themes/_light.scss etc.
+// =============================================================================
+
+@use 'sass:map';
+@use '../tokens/spacing'    as *;
+@use '../tokens/typography' as *;
+@use '../tokens/radius'     as *;
+@use '../tokens/shadows'    as *;
+@use '../tokens/zindex'     as *;
+
+:root {
+  // ── Spacing ────────────────────────────────────────────────────────────────
+  @each $key, $value in $z-spacing {
+    --z-space-#{$key}: #{$value};
+  }
+
+  // ── Typography ─────────────────────────────────────────────────────────────
+  --z-font-sans:  #{map.get($z-font-family, sans)};
+  --z-font-mono:  #{map.get($z-font-family, mono)};
+  --z-font-serif: #{map.get($z-font-family, serif)};
+
+  @each $key, $value in $z-font-size {
+    --z-text-#{$key}: #{$value};
+  }
+  @each $key, $value in $z-font-weight {
+    --z-font-#{$key}: #{$value};
+  }
+  @each $key, $value in $z-line-height {
+    --z-leading-#{$key}: #{$value};
+  }
+  @each $key, $value in $z-letter-spacing {
+    --z-tracking-#{$key}: #{$value};
+  }
+
+  // ── Border radius ──────────────────────────────────────────────────────────
+  @each $key, $value in $z-radius {
+    --z-radius-#{$key}: #{$value};
+  }
+
+  // ── Shadows ────────────────────────────────────────────────────────────────
+  @each $key, $value in $z-shadows {
+    --z-shadow-#{$key}: #{$value};
+  }
+
+  // ── Z-index ────────────────────────────────────────────────────────────────
+  @each $key, $value in $z-zindex {
+    --z-z-#{$key}: #{$value};
+  }
+
+  // ── Component defaults ─────────────────────────────────────────────────────
+  --z-component-radius: var(--z-radius-md);
+
+  // ── Transitions ────────────────────────────────────────────────────────────
+  --z-transition-fast:  100ms ease;
+  --z-transition-base:  150ms ease;
+  --z-transition-slow:  250ms ease;
+
+  // Semantic color variables are declared in themes/_light.scss (and _dark.scss,
+  // _company.scss). No placeholder needed here — the theme @use runs first in
+  // z-ui.scss so real values are always present before components reference them.
+}

@@ -1,0 +1,43 @@
+// =============================================================================
+// ui / utilities / _positions.scss
+// =============================================================================
+
+@use '../tokens/zindex' as *;
+
+
+// Position
+.static   { position: static; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed    { position: fixed; }
+.sticky   { position: sticky; }
+
+// Inset
+.inset-0     { inset: 0; }
+.inset-auto  { inset: auto; }
+.inset-x-0   { inset-inline: 0; }
+.inset-y-0   { inset-block: 0; }
+.top-0       { top: 0; }
+.right-0     { right: 0; }
+.bottom-0    { bottom: 0; }
+.left-0      { left: 0; }
+.top-auto    { top: auto; }
+.right-auto  { right: auto; }
+.bottom-auto { bottom: auto; }
+.left-auto   { left: auto; }
+
+// index
+
+@each $key, $val in $zindex {
+  .#{$key} { index: $val; }
+}
+
+// Float
+.float-left  { float: inline-start; }
+.float-right { float: inline-end; }
+.float-none  { float: none; }
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}

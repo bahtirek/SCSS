@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Acme Admin — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+<link rel="stylesheet" href="../dist/ui.css" />
+
+<!--
+  ui would normally be: <link rel="stylesheet" href="dist/ui.css" />
+  Inlined here so the file is self-contained. This is the compiled output of ui.
+-->
+<style>
+/* ══════════════════════════════════════════════════════════
+   ui — inlined compiled CSS (represents dist/ui.css)
+   All design decisions below come from ui tokens.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── tokens ── *
+
+/* ── reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: none; text-size-adjust: none; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-subtle);
+  -webkit-font-smoothing: antialiased;
+  min-block-size: 100vh;
+}
+
+/* ════════════════════════════════════════════
+   PAGE-SPECIFIC STRUCTURAL CSS ONLY
+   (shell grid, sidebar dimensions, chart bars,
+    avatar colours — not abstractable into ui)
+   ════════════════════════════════════════════ */
+.admin-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 52px 1fr;
+  min-block-size: 100vh;
+}
+.admin-sidebar {
+  grid-row: 1 / 3;
+  background-color: var(--bg-elevated);
+  border-inline-end: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  padding-block-end: var(--space-md);
+}
+.admin-main { overflow: auto; }
+
+.brand-icon {
+  inline-size: 28px; block-size: 28px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-brand);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-on-brand); font-size: 15px; flex-shrink: 0;
+}
+
+.sidebar-footer {
+  margin-block-start: auto;
+  padding-block-start: var(--space-sm);
+  border-block-start: 1px solid var(--border-default);
+  padding-inline: var(--space-sm);
+}
+.user-row {
+  display: flex; align-items: center; gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-base);
+  cursor: pointer;
+}
+.user-row:hover { background-color: var(--bg-subtle); }
+.user-avatar {
+  inline-size: 30px; block-size: 30px; border-radius: var(--radius-full);
+  background-color: var(--color-brand-subtle);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs); font-weight: var(--font-semibold);
+  color: var(--color-brand); flex-shrink: 0;
+}
+
+.search-box {
+  display: flex; align-items: center; gap: var(--space-xs);
+  background-color: var(--bg-subtle); border: 1px solid var(--border-default);
+  border-radius: var(--radius-md); padding-inline: var(--space-sm);
+  block-size: 32px; font-size: var(--text-sm); color: var(--text-tertiary);
+  cursor: text; min-inline-size: 180px;
+  transition: border-color var(--transition-base);
+}
+.search-box:hover { border-color: var(--border-strong); }
+.search-kbd {
+  margin-inline-start: auto; font-size: var(--text-xs);
+  background-color: var(--bg-base); border: 1px solid var(--border-default);
+  padding: 1px 5px; border-radius: var(--radius-sm);
+  color: var(--text-tertiary); font-family: var(--font-mono);
+}
+
+.icon-btn {
+  inline-size: 32px; block-size: 32px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary); cursor: pointer;
+  border: none; background: transparent;
+  transition: background-color var(--transition-base);
+}
+.icon-btn:hover { background-color: var(--bg-subtle); }
+.icon-btn i { font-size: 18px; }
+.notif-dot {
+  position: absolute; top: 5px; right: 5px;
+  inline-size: 7px; block-size: 7px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-danger);
+  border: 2px solid var(--bg-elevated);
+}
+
+/* stat cards grid */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-sm); }
+
+/* two-col */
+.two-col { display: grid; grid-template-columns: 1fr 340px; gap: var(--space-sm); }
+
+/* chart */
+.chart-area  { display: flex; align-items: flex-end; gap: 6px; block-size: 160px; }
+.bar-group   { display: flex; align-items: flex-end; gap: 3px; flex: 1; }
+.bar         { flex: 1; border-radius: 3px 3px 0 0; transition: filter .15s; cursor: default; }
+.bar:hover   { filter: brightness(.88); }
+.bar-curr    { background-color: var(--color-brand); }
+.bar-prev    { background-color: var(--color-brand-subtle); border: 1px solid #93c5fd; }
+[data-theme="dark"] .bar-prev { border-color: #1e40af; }
+.chart-labels{ display: flex; gap: 6px; }
+.chart-label { flex: 1; font-size: var(--text-xs); color: var(--text-tertiary); text-align: center; }
+.legend-dot  { inline-size: 8px; block-size: 8px; border-radius: 2px; display: inline-block; }
+
+/* activity feed */
+.activity-item { display: flex; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); }
+.activity-item + .activity-item { border-block-start: 1px solid var(--border-subtle); }
+.activity-icon {
+  inline-size: 28px; block-size: 28px; border-radius: var(--radius-full); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 13px;
+}
+.icon-ok   { background-color: var(--color-success-bg); color: var(--color-success); }
+.icon-info { background-color: var(--color-brand-subtle); color: var(--color-brand); }
+.icon-warn { background-color: var(--color-warning-bg); color: var(--color-warning); }
+.icon-err  { background-color: var(--color-danger-bg); color: var(--color-danger); }
+
+/* customer avatar */
+.c-avatar {
+  inline-size: 26px; block-size: 26px; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs); font-weight: var(--font-semibold); flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- ════════════ SIDEBAR ════════════ -->
+  <aside class="admin-sidebar" role="navigation" aria-label="Main navigation">
+
+    <!-- Brand -->
+    <div class="navbar__brand border-b py-md px-md" style="block-size:52px">
+      <div class="brand-icon" aria-hidden="true"><i class="ti ti-layers-subtract"></i></div>
+      Acme Admin
+    </div>
+
+    <!-- Nav -->
+    <nav class="sidenav flex-1 overflow-auto pt-sm">
+      <p class="sidenav__label">Overview</p>
+      <a class="sidenav-link is-active" href="#" aria-current="page">
+        <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+        Dashboard
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>
+        Analytics
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-report-analytics" aria-hidden="true"></i>
+        Reports
+      </a>
+
+      <p class="sidenav__label">Manage</p>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-users" aria-hidden="true"></i>
+        Customers
+        <span class="sidenav-link__badge">2.4k</span>
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-shopping-bag" aria-hidden="true"></i>
+        Orders
+        <span class="sidenav-link__badge">14</span>
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-package" aria-hidden="true"></i>
+        Products
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-ticket" aria-hidden="true"></i>
+        Support
+        <span class="sidenav-link__badge">3</span>
+      </a>
+
+      <p class="sidenav__label">System</p>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-settings" aria-hidden="true"></i>
+        Settings
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-shield-check" aria-hidden="true"></i>
+        Permissions
+      </a>
+      <a class="sidenav-link" href="#">
+        <i class="ti ti-plug" aria-hidden="true"></i>
+        Integrations
+      </a>
+    </nav>
+
+    <!-- User -->
+    <div class="sidebar-footer">
+      <div class="user-row" role="button" tabindex="0" aria-label="User menu">
+        <div class="user-avatar" aria-hidden="true">JD</div>
+        <div class="min-w-0">
+          <div class="text-sm font-medium text-primary truncate">Jane Doe</div>
+          <div class="text-xs text-tertiary">Super admin</div>
+        </div>
+        <i class="ti ti-dots ms-auto text-tertiary" aria-hidden="true"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════════ TOPBAR ════════════ -->
+  <header class="navbar" role="banner">
+    <span class="text-base font-medium text-primary">Dashboard</span>
+    <span class="text-sm text-tertiary">/ Overview</span>
+
+    <div class="navbar__actions ms-auto">
+      <div class="search-box" role="search" aria-label="Site search">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        Search&hellip;
+        <span class="search-kbd" aria-label="Command K">⌘K</span>
+      </div>
+
+      <button class="icon-btn relative" aria-label="Notifications — 1 unread">
+        <i class="ti ti-bell" aria-hidden="true"></i>
+        <span class="notif-dot" aria-hidden="true"></span>
+      </button>
+
+      <button class="icon-btn" aria-label="Help">
+        <i class="ti ti-help-circle" aria-hidden="true"></i>
+      </button>
+
+      <button class="btn btn--primary">
+        <i class="ti ti-plus" aria-hidden="true"></i>
+        New order
+      </button>
+    </div>
+  </header>
+
+  <!-- ════════════ MAIN ════════════ -->
+  <main class="admin-main bg-subtle">
+    <div class="flex flex-col gap-md p-md">
+
+      <!-- Page heading -->
+      <div class="flex items-start justify-between">
+        <div>
+          <h1 class="text-xl font-semibold text-primary leading-snug">Overview</h1>
+          <p class="text-sm text-secondary mt-xs">Welcome back, Jane. Here's what's happening today.</p>
+        </div>
+        <div class="flex gap-sm">
+          <button class="btn btn--outline">
+            <i class="ti ti-calendar" aria-hidden="true"></i> May 2026
+          </button>
+          <button class="btn btn--outline">
+            <i class="ti ti-download" aria-hidden="true"></i> Export
+          </button>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stats-grid">
+
+        <div class="card">
+          <div class="card__body">
+            <div class="flex justify-between items-center mb-xs">
+              <span class="text-xs text-secondary">Total revenue</span>
+              <i class="ti ti-trending-up text-tertiary" aria-hidden="true"></i>
+            </div>
+            <div class="text-3xl font-semibold text-primary leading-none">$84,291</div>
+            <div class="flex items-center gap-xs text-xs text-success mt-xs">
+              <i class="ti ti-arrow-up-right" aria-hidden="true"></i>
+              +12.5% vs last month
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__body">
+            <div class="flex justify-between items-center mb-xs">
+              <span class="text-xs text-secondary">Active users</span>
+              <i class="ti ti-users text-tertiary" aria-hidden="true"></i>
+            </div>
+            <div class="text-3xl font-semibold text-primary leading-none">2,418</div>
+            <div class="flex items-center gap-xs text-xs text-success mt-xs">
+              <i class="ti ti-arrow-up-right" aria-hidden="true"></i>
+              +4.1% vs last month
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__body">
+            <div class="flex justify-between items-center mb-xs">
+              <span class="text-xs text-secondary">Open orders</span>
+              <i class="ti ti-shopping-bag text-tertiary" aria-hidden="true"></i>
+            </div>
+            <div class="text-3xl font-semibold text-primary leading-none">143</div>
+            <div class="flex items-center gap-xs text-xs text-danger mt-xs">
+              <i class="ti ti-arrow-down-right" aria-hidden="true"></i>
+              &ndash;3 since yesterday
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__body">
+            <div class="flex justify-between items-center mb-xs">
+              <span class="text-xs text-secondary">Support tickets</span>
+              <i class="ti ti-ticket text-tertiary" aria-hidden="true"></i>
+            </div>
+            <div class="text-3xl font-semibold text-primary leading-none">12</div>
+            <div class="text-xs text-tertiary mt-xs">3 urgent &middot; 9 open</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chart + Activity -->
+      <div class="two-col">
+
+        <!-- Revenue chart -->
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Revenue overview</span>
+            <div class="flex items-center gap-md">
+              <span class="flex items-center gap-xs text-xs text-secondary">
+                <span class="legend-dot" style="background:var(--color-brand)"></span>This month
+              </span>
+              <span class="flex items-center gap-xs text-xs text-secondary">
+                <span class="legend-dot" style="background:var(--color-brand-subtle);border:1px solid #93c5fd"></span>Last month
+              </span>
+              <button class="icon-btn" style="inline-size:26px;block-size:26px" aria-label="Chart options">
+                <i class="ti ti-dots" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-md pb-md">
+            <div class="chart-area" id="chart-area" role="img" aria-label="Weekly revenue bar chart"></div>
+            <div class="border-t-subtle pt-sm">
+              <div class="chart-labels" id="chart-labels"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity feed -->
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Recent activity</span>
+            <a class="flex items-center gap-xs text-xs text-brand cursor-pointer" href="#">
+              View all <i class="ti ti-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div>
+            <div class="activity-item">
+              <div class="activity-icon icon-ok" aria-hidden="true"><i class="ti ti-check"></i></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-primary leading-snug"><strong class="font-medium">Order #4821</strong> fulfilled and shipped to Maya R.</div>
+                <div class="text-xs text-tertiary mt-xs">2 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon icon-info" aria-hidden="true"><i class="ti ti-user-plus"></i></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-primary leading-snug"><strong class="font-medium">New customer</strong> Ben Torres signed up</div>
+                <div class="text-xs text-tertiary mt-xs">18 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon icon-warn" aria-hidden="true"><i class="ti ti-alert-triangle"></i></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-primary leading-snug"><strong class="font-medium">Low stock</strong> — Wireless Headphones (4 left)</div>
+                <div class="text-xs text-tertiary mt-xs">1 hour ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon icon-ok" aria-hidden="true"><i class="ti ti-credit-card"></i></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-primary leading-snug"><strong class="font-medium">Payment received</strong> $3,200 from Acme Corp</div>
+                <div class="text-xs text-tertiary mt-xs">2 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon icon-err" aria-hidden="true"><i class="ti ti-x"></i></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-primary leading-snug"><strong class="font-medium">Order #4819</strong> cancelled by customer</div>
+                <div class="text-xs text-tertiary mt-xs">3 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon icon-info" aria-hidden="true"><i class="ti ti-plug"></i></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-primary leading-snug"><strong class="font-medium">Stripe integration</strong> reconnected successfully</div>
+                <div class="text-xs text-tertiary mt-xs">Yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders table -->
+      <div class="card">
+        <div class="card__header">
+          <span class="card__title">Recent orders</span>
+          <div class="flex items-center gap-sm">
+            <button class="btn btn--outline btn--sm">
+              <i class="ti ti-adjustments-horizontal" aria-hidden="true"></i> Filter
+            </button>
+            <button class="btn btn--outline btn--sm">
+              <i class="ti ti-download" aria-hidden="true"></i> Export
+            </button>
+            <a class="flex items-center gap-xs text-xs text-brand cursor-pointer" href="#">
+              View all <i class="ti ti-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Order</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Product</th>
+                <th scope="col">Date</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-mono text-xs text-secondary">#4821</td>
+                <td>
+                  <div class="flex items-center gap-sm">
+                    <div class="c-avatar" style="background:#dbeafe;color:#1e40af" aria-hidden="true">MR</div>
+                    Maya Rodriguez
+                  </div>
+                </td>
+                <td class="text-secondary">Pro Plan &times; 1</td>
+                <td class="text-secondary">27 May 2026</td>
+                <td class="font-medium">$199.00</td>
+                <td><span class="badge badge--success badge--dot">Fulfilled</span></td>
+                <td><button class="btn btn--ghost btn--sm">View</button></td>
+              </tr>
+              <tr>
+                <td class="font-mono text-xs text-secondary">#4820</td>
+                <td>
+                  <div class="flex items-center gap-sm">
+                    <div class="c-avatar" style="background:#fef9c3;color:#713f12" aria-hidden="true">BT</div>
+                    Ben Torres
+                  </div>
+                </td>
+                <td class="text-secondary">Starter Plan &times; 2</td>
+                <td class="text-secondary">26 May 2026</td>
+                <td class="font-medium">$98.00</td>
+                <td><span class="badge badge--warning badge--dot">Pending</span></td>
+                <td><button class="btn btn--ghost btn--sm">View</button></td>
+              </tr>
+              <tr>
+                <td class="font-mono text-xs text-secondary">#4819</td>
+                <td>
+                  <div class="flex items-center gap-sm">
+                    <div class="c-avatar" style="background:#fce7f3;color:#831843" aria-hidden="true">CM</div>
+                    Carol Miles
+                  </div>
+                </td>
+                <td class="text-secondary">Enterprise &times; 1</td>
+                <td class="text-secondary">26 May 2026</td>
+                <td class="font-medium">$499.00</td>
+                <td><span class="badge badge--danger badge--dot">Cancelled</span></td>
+                <td><button class="btn btn--ghost btn--sm">View</button></td>
+              </tr>
+              <tr>
+                <td class="font-mono text-xs text-secondary">#4818</td>
+                <td>
+                  <div class="flex items-center gap-sm">
+                    <div class="c-avatar" style="background:#d1fae5;color:#065f46" aria-hidden="true">AR</div>
+                    Alex Reed
+                  </div>
+                </td>
+                <td class="text-secondary">Pro Plan &times; 3</td>
+                <td class="text-secondary">25 May 2026</td>
+                <td class="font-medium">$597.00</td>
+                <td><span class="badge badge--success badge--dot">Fulfilled</span></td>
+                <td><button class="btn btn--ghost btn--sm">View</button></td>
+              </tr>
+              <tr>
+                <td class="font-mono text-xs text-secondary">#4817</td>
+                <td>
+                  <div class="flex items-center gap-sm">
+                    <div class="c-avatar" style="background:#ede9fe;color:#4c1d95" aria-hidden="true">SK</div>
+                    Sara Kim
+                  </div>
+                </td>
+                <td class="text-secondary">Starter Plan &times; 1</td>
+                <td class="text-secondary">25 May 2026</td>
+                <td class="font-medium">$49.00</td>
+                <td><span class="badge badge--neutral badge--dot">Processing</span></td>
+                <td><button class="btn btn--ghost btn--sm">View</button></td>
+              </tr>
+              <tr>
+                <td class="font-mono text-xs text-secondary">#4816</td>
+                <td>
+                  <div class="flex items-center gap-sm">
+                    <div class="c-avatar" style="background:#fef3c7;color:#78350f" aria-hidden="true">DJ</div>
+                    David Jensen
+                  </div>
+                </td>
+                <td class="text-secondary">Pro Plan &times; 2</td>
+                <td class="text-secondary">24 May 2026</td>
+                <td class="font-medium">$398.00</td>
+                <td><span class="badge badge--brand badge--dot">Shipped</span></td>
+                <td><button class="btn btn--ghost btn--sm">View</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /flex col -->
+  </main>
+</div>
+
+<!-- Dark mode toggle -->
+<div class="fixed bottom-0 right-0 p-md toast">
+  <button class="btn btn--outline" id="theme-toggle" aria-label="Toggle dark mode">
+    <i class="ti ti-moon" id="theme-icon" aria-hidden="true"></i>
+    <span id="theme-label">Dark mode</span>
+  </button>
+</div>
+
+<script>
+/* ── Bar chart ── */
+const weeks = ['W20','W21','W22','W23','W24','W25','W26','W27'];
+const curr  = [62, 78, 55, 91, 84, 103, 88, 116];
+const prev  = [50, 65, 70, 72, 60,  88, 74,  95];
+const max   = Math.max(...curr, ...prev);
+
+const area   = document.getElementById('chart-area');
+const labels = document.getElementById('chart-labels');
+
+weeks.forEach((w, i) => {
+  const hc = Math.round((curr[i] / max) * 148);
+  const hp = Math.round((prev[i] / max) * 148);
+
+  const grp = document.createElement('div');
+  grp.className = 'bar-group';
+
+  const bp = document.createElement('div');
+  bp.className = 'bar bar-prev';
+  bp.style.height = hp + 'px';
+  bp.title = w + ' last month: $' + prev[i] + 'k';
+
+  const bc = document.createElement('div');
+  bc.className = 'bar bar-curr';
+  bc.style.height = hc + 'px';
+  bc.title = w + ' this month: $' + curr[i] + 'k';
+
+  grp.append(bp, bc);
+  area.appendChild(grp);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'chart-label';
+  lbl.textContent = w;
+  labels.appendChild(lbl);
+});
+
+/* ── Dark mode ── */
+const toggle = document.getElementById('theme-toggle');
+const icon   = document.getElementById('theme-icon');
+const label  = document.getElementById('theme-label');
+let dark = false;
+
+toggle.addEventListener('click', () => {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  icon.className  = dark ? 'ti ti-sun' : 'ti ti-moon';
+  label.textContent = dark ? 'Light mode' : 'Dark mode';
+});
+
+/* ── Sidebar nav ── */
+document.querySelectorAll('.sidenav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.sidenav-link').forEach(l => l.classList.remove('is-active'));
+    link.classList.add('is-active');
+  });
+});
+</script>
+</body>
+</html>

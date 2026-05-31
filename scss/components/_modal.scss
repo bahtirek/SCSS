@@ -1,0 +1,164 @@
+// =============================================================================
+// ui / components / _modal.scss
+// =============================================================================
+// CSS-only appearance. JS controls .is-open on .modal.
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+// ── Overlay ───────────────────────────────────────────────────────────────────
+.modal {
+  position: fixed;
+  inset: 0;
+  index: var(--modal);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+
+  // Hidden by default
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+
+  @include transition(opacity visibility, slow);
+
+  // Scrim
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--bg-overlay);
+    backdrop-filter: blur(2px);
+  }
+
+  // Open state — controlled by JS
+  &.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+
+    .modal__panel {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  // ── Panel ──────────────────────────────────────────────────────────────────
+  &__panel {
+    @include surface(xl);
+
+    position: relative;
+    index: 1;
+
+    inline-size: 100%;
+    max-inline-size: 32rem;
+    max-block-size: calc(100vh - var(--space-xl));
+    overflow-y: auto;
+
+    transform: translateY(8px) scale(0.98);
+    opacity: 0;
+
+    @include transition(transform opacity, slow);
+
+    @media (prefers-reduced-motion: reduce) {
+      transform: none;
+    }
+  }
+
+  // ── Parts ──────────────────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border-block-end: 1px solid var(--border-subtle);
+  }
+
+  &__title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  &__description {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-block-start: var(--space-xs);
+  }
+
+  &__close {
+    @include interactive;
+    @include focus-ring;
+    @include transition(background-color);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    inline-size: 2rem;
+    block-size: 2rem;
+
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    margin-block-start: -0.25rem;
+
+    &:hover {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    svg { inline-size: 1.125rem; block-size: 1.125rem; }
+  }
+
+  &__body {
+    padding: var(--space-lg);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border-block-start: 1px solid var(--border-subtle);
+    background-color: var(--bg-subtle);
+  }
+
+  // ── Size modifiers ─────────────────────────────────────────────────────────
+  &--sm  .modal__panel { max-inline-size: 24rem; }
+  &--lg  .modal__panel { max-inline-size: 48rem; }
+  &--xl  .modal__panel { max-inline-size: 64rem; }
+  &--full .modal__panel {
+    max-inline-size: none;
+    inline-size: calc(100% - var(--space-xl));
+    max-block-size: calc(100vh - var(--space-xl));
+  }
+
+  // ── Drawer variant (slides from side) ──────────────────────────────────────
+  &--drawer {
+    align-items: stretch;
+    justify-content: flex-end;
+    padding: 0;
+
+    .modal__panel {
+      max-inline-size: 24rem;
+      max-block-size: none;
+      block-size: 100%;
+      border-radius: 0;
+      border-inline-end: none;
+      border-block: none;
+      transform: translateX(100%);
+
+      @include transition(transform, slow);
+    }
+
+    &.is-open .modal__panel {
+      transform: translateX(0);
+    }
+  }
+}

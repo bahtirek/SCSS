@@ -1,0 +1,58 @@
+// =============================================================================
+// ui.scss — Framework entry point
+// =============================================================================
+//
+// Build:  sass scss/ui.scss dist/ui.css --style=compressed
+//
+// Rule: ALL @use statements must come before any CSS output.
+// Token files (colors, spacing, typography, etc.) are SCSS-only — no CSS output.
+// CSS custom properties for tokens are emitted by core/_root.scss.
+// Semantic color variables are emitted by themes/_light.scss etc.
+// =============================================================================
+
+// ── 1. Themes — semantic color variables ─────────────────────────────────────
+// (internally @use the color token maps they need)
+@use 'themes/light';    // :root  light values
+@use 'themes/dark';     // [data-theme=dark] + prefers-color-scheme: dark
+@use 'themes/company';  // [data-theme=company] — copy & customise
+
+// ── 2. Core — reset, tokens→CSS vars, globals, animations ────────────────────
+@use 'core/reset';      // Modern CSS reset
+@use 'core/root';       // All CSS custom properties (tokens + semantic layer)
+@use 'core/globals';    // HTML element defaults
+@use 'core/animations'; // @keyframes + .animate-* classes
+
+// ── 3. Layout ─────────────────────────────────────────────────────────────────
+@use 'layout/container';
+@use 'layout/grid';
+@use 'layout/section';
+@use 'layout/stack';
+
+// ── 4. Components ─────────────────────────────────────────────────────────────
+@use 'components/button';
+@use 'components/card';
+@use 'components/accordion';
+@use 'components/dropdown';
+@use 'components/modal';
+@use 'components/menu';
+@use 'components/nav';
+@use 'components/table';
+@use 'components/link';
+
+// ── 5. Forms ──────────────────────────────────────────────────────────────────
+@use 'forms/field';
+@use 'forms/input';
+@use 'forms/textarea';
+@use 'forms/select';
+@use 'forms/checkbox';
+@use 'forms/switch';
+
+// ── 6. Utilities — last so they can override component defaults ───────────────
+@use 'utilities/display';
+@use 'utilities/flex';
+@use 'utilities/spacing';
+@use 'utilities/typography';
+@use 'utilities/sizing';
+@use 'utilities/positions';
+@use 'utilities/visibility';
+@use 'utilities/responsive';

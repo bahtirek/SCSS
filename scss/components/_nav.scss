@@ -1,0 +1,255 @@
+// =============================================================================
+// ui / components / _nav.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+// ── Top navigation bar ────────────────────────────────────────────────────────
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+
+  block-size: 3.5rem;
+  padding-inline: var(--space-lg);
+
+  background-color: var(--bg-elevated);
+  border-block-end: 1px solid var(--border-subtle);
+
+  position: sticky;
+  top: 0;
+  index: var(--sticky);
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: var(--font-semibold);
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    list-style: none;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+  }
+}
+
+// ── Nav link ──────────────────────────────────────────────────────────────────
+.nav-link {
+  @include interactive;
+  @include transition(background-color color);
+  @include focus-ring;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+
+  padding-block: var(--space-xs);
+  padding-inline: var(--space-sm);
+
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+
+  &:hover {
+    background-color: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+
+  &.is-active,
+  &[aria-current='page'] {
+    background-color: var(--color-brand-subtle);
+    color: var(--color-brand);
+    font-weight: var(--font-semibold);
+  }
+
+  svg {
+    inline-size: 1em;
+    block-size: 1em;
+    flex-shrink: 0;
+  }
+}
+
+// ── Sidebar nav ───────────────────────────────────────────────────────────────
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+
+  &__section {
+    margin-block-start: var(--space-md);
+
+    &:first-child { margin-block-start: 0; }
+  }
+
+  &__label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    padding-inline: var(--space-sm);
+    padding-block-end: var(--space-xs);
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+  }
+}
+
+// Sidebar nav link (full-width)
+.sidenav-link {
+  @include interactive;
+  @include transition(background-color color);
+  @include focus-ring;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  padding-block: var(--space-sm);
+  padding-inline: var(--space-sm);
+
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+
+  inline-size: 100%;
+
+  &:hover {
+    background-color: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+
+  &.is-active,
+  &[aria-current='page'] {
+    background-color: var(--color-brand-subtle);
+    color: var(--color-brand);
+    font-weight: var(--font-semibold);
+  }
+
+  &__icon {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+  }
+
+  &.is-active &__icon,
+  &[aria-current='page'] &__icon {
+    color: var(--color-brand);
+  }
+  &.is-active &__badge,
+  &[aria-current='page'] &__badge {
+    color: var(--color-brand);
+    background-color: var(--color-brand-subtle);
+  }
+
+  &__badge {
+    margin-inline-start: auto;
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    color: var(--text-tertiary);
+    background-color: var(--bg-subtle);
+    padding-inline: var(--space-xs);
+    border-radius: var(--radius-full);
+  }
+}
+
+// ── Breadcrumb ────────────────────────────────────────────────────────────────
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+
+    &::before {
+      content: '/';
+      color: var(--text-disabled);
+    }
+
+    &:first-child::before {
+      display: none;
+    }
+  }
+
+  &__link {
+    @include focus-ring;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-xs);
+
+    &:hover { color: var(--text-primary); text-decoration: underline; }
+  }
+
+  &__current {
+    color: var(--text-primary);
+    font-weight: var(--font-medium);
+  }
+}
+
+// ── Tab navigation ────────────────────────────────────────────────────────────
+.tabs {
+  display: flex;
+  gap: 0;
+  border-block-end: 1px solid var(--border-subtle);
+
+  &__item {
+    @include interactive;
+    @include transition(color border-color);
+    @include focus-ring;
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-md);
+
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-block-end: 2px solid transparent;
+    margin-block-end: -1px;
+
+    &:hover {
+      color: var(--text-primary);
+      border-block-end-color: var(--border-strong);
+    }
+
+    &.is-active,
+    &[aria-selected='true'] {
+      color: var(--color-brand);
+      border-block-end-color: var(--color-brand);
+    }
+  }
+}

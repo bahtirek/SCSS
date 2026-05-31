@@ -1,0 +1,65 @@
+// =============================================================================
+// ui / core / _root.scss
+// =============================================================================
+// Single source of all CSS custom property declarations.
+// Token maps live in tokens/ as SCSS variables (no CSS output there).
+// Semantic color vars are given real values by themes/_light.scss etc.
+// =============================================================================
+
+@use 'sass:map';
+@use '../tokens/spacing'    as *;
+@use '../tokens/typography' as *;
+@use '../tokens/radius'     as *;
+@use '../tokens/shadows'    as *;
+@use '../tokens/zindex'     as *;
+
+:root {
+  // ── Spacing ────────────────────────────────────────────────────────────────
+  @each $key, $value in $spacing {
+    --space-#{$key}: #{$value};
+  }
+
+  // ── Typography ─────────────────────────────────────────────────────────────
+  --font-sans:  #{map.get($font-family, sans)};
+  --font-mono:  #{map.get($font-family, mono)};
+  --font-serif: #{map.get($font-family, serif)};
+
+  @each $key, $value in $font-size {
+    --text-#{$key}: #{$value};
+  }
+  @each $key, $value in $font-weight {
+    --font-#{$key}: #{$value};
+  }
+  @each $key, $value in $line-height {
+    --leading-#{$key}: #{$value};
+  }
+  @each $key, $value in $letter-spacing {
+    --tracking-#{$key}: #{$value};
+  }
+
+  // ── Border radius ──────────────────────────────────────────────────────────
+  @each $key, $value in $radius {
+    --radius-#{$key}: #{$value};
+  }
+
+  // ── Shadows ────────────────────────────────────────────────────────────────
+  @each $key, $value in $shadows {
+    --shadow-#{$key}: #{$value};
+  }
+
+  // ── index ────────────────────────────────────────────────────────────────
+  @each $key, $value in $zindex {
+    --#{$key}: #{$value};
+  }
+
+  // ── Component defaults ─────────────────────────────────────────────────────
+  --component-radius: var(--radius-md);
+
+  // ── Transitions ────────────────────────────────────────────────────────────
+  --transition-fast:  100ms ease;
+  --transition-base:  150ms ease;
+  --transition-slow:  250ms ease;
+
+  // ── Semantic color layer (values set by theme files) ───────────────────────
+ 
+}

@@ -1,0 +1,40 @@
+// =============================================================================
+// ui / forms / _select.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+@use 'input' as i;
+
+.select {
+  @include i.input-base;
+
+  &:invalid:not(:placeholder-shown) { @include i.input-invalid; }
+  .is-invalid & { @include i.input-invalid; }
+
+  padding-inline-end: 2.25rem; // room for chevron
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-sm) center;
+  background-size: 1rem;
+  cursor: pointer;
+
+  // Sizes
+  &--sm {
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-xs) 2rem;
+    font-size: var(--text-xs);
+  }
+
+  &--lg {
+    padding-block: 0.625rem;
+    padding-inline: var(--space-md) 2.5rem;
+    font-size: var(--text-base);
+  }
+
+  &[multiple] {
+    background-image: none;
+    padding-inline-end: var(--space-sm);
+    block-size: auto;
+    cursor: default;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "Production-grade SCSS UI framework for enterprise SaaS applications",
+  "main": "scss/ui.scss",
+  "style": "dist/ui.css",
+  "files": [
+    "scss/",
+    "dist/"
+  ],
+  "scripts": {
+    "build": "sass scss/ui.scss dist/ui.css --style=compressed --no-source-map",
+    "build:expanded": "sass scss/ui.scss dist/ui.expanded.css --style=expanded",
+    "build:map": "sass scss/ui.scss dist/ui.css --style=compressed",
+    "watch": "sass --watch scss/ui.scss dist/ui.css --style=expanded",
+    "dev": "npm run watch",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean"
+  },
+  "keywords": [
+    "css",
+    "scss",
+    "design-system",
+    "ui-framework",
+    "enterprise",
+    "design-tokens",
+    "accessible"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.77.0",
+    "rimraf": "^5.0.0"
+  }
+}

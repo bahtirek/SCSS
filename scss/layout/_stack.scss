@@ -1,0 +1,53 @@
+// =============================================================================
+// ui / layout / _stack.scss
+// =============================================================================
+// Stack is a vertical layout primitive that adds consistent spacing between
+// its direct children without touching margin on outer edges.
+// =============================================================================
+
+@use '../tokens/spacing' as *;
+
+.stack {
+  display: flex;
+  flex-direction: column;
+
+  // Default gap = md
+  gap: var(--space-md);
+
+  // Modifiers
+  &--xs  { gap: var(--space-xs); }
+  &--sm  { gap: var(--space-sm); }
+  &--lg  { gap: var(--space-lg); }
+  &--xl  { gap: var(--space-xl); }
+  &--xxl { gap: var(--space-xxl); }
+}
+
+// Inline (horizontal) cluster
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+
+  &--md  { gap: var(--space-md); }
+  &--lg  { gap: var(--space-lg); }
+}
+
+// Center — both axes
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Switcher — horizontal until breakpoint, then stack
+.switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+
+  > * {
+    flex-grow: 1;
+    flex-basis: calc((30rem - 100%) * 999);
+  }
+}

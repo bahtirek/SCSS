@@ -1,0 +1,205 @@
+// =============================================================================
+// ui / components / _button.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+// ── Base ──────────────────────────────────────────────────────────────────────
+.btn {
+  @include interactive;
+  @include transition(background-color color border-color box-shadow opacity);
+  @include focus-ring;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+
+  padding-block: 0.5rem;
+  padding-inline: var(--space-md);
+
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-none);
+  white-space: nowrap;
+  text-decoration: none;
+
+  border: 1px solid transparent;
+  border-radius: var(--component-radius);
+
+  // ── Variants ──────────────────────────────────────────────────────────────
+
+  // Primary (filled brand)
+  &--primary {
+    background-color: var(--color-brand);
+    color: var(--text-on-brand);
+    border-color: var(--color-brand);
+
+    &:hover:not(:disabled):not(.is-disabled) {
+      background-color: var(--color-brand-hover);
+      border-color: var(--color-brand-hover);
+    }
+  }
+
+  // Secondary (subtle brand tint)
+  &--secondary {
+    background-color: var(--color-brand-subtle);
+    color: var(--color-brand);
+    border-color: transparent;
+
+    &:hover:not(:disabled):not(.is-disabled) {
+      background-color: var(--color-brand-subtle);
+      border-color: var(--color-brand);
+    }
+  }
+
+  // Outline
+  &--outline {
+    background-color: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-default);
+
+    &:hover:not(:disabled):not(.is-disabled) {
+      background-color: var(--bg-subtle);
+      border-color: var(--border-strong);
+    }
+  }
+
+  // Ghost
+  &--ghost {
+    background-color: transparent;
+    color: var(--text-primary);
+    border-color: transparent;
+
+    &:hover:not(:disabled):not(.is-disabled) {
+      background-color: var(--bg-subtle);
+    }
+  }
+
+  // Danger
+  &--danger {
+    background-color: var(--color-danger);
+    color: #ffffff;
+    border-color: var(--color-danger);
+
+    &:hover:not(:disabled):not(.is-disabled) {
+      filter: brightness(0.9);
+    }
+  }
+
+  // Danger outline
+  &--danger-outline {
+    background-color: transparent;
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+
+    &:hover:not(:disabled):not(.is-disabled) {
+      background-color: var(--color-danger-bg);
+    }
+  }
+
+  // ── Sizes ──────────────────────────────────────────────────────────────────
+
+  &--xs {
+    padding-block: 0.25rem;
+    padding-inline: var(--space-sm);
+    font-size: var(--text-xs);
+    border-radius: var(--radius-sm);
+  }
+
+  &--sm {
+    padding-block: 0.375rem;
+    padding-inline: 0.75rem;
+    font-size: var(--text-sm);
+  }
+
+  &--lg {
+    padding-block: 0.625rem;
+    padding-inline: var(--space-lg);
+    font-size: var(--text-base);
+  }
+
+  &--xl {
+    padding-block: 0.75rem;
+    padding-inline: var(--space-xl);
+    font-size: var(--text-lg);
+  }
+
+  // Icon-only (square)
+  &--icon {
+    padding: 0.5rem;
+    aspect-ratio: 1;
+  }
+
+  // Full-width
+  &--block {
+    inline-size: 100%;
+  }
+
+  // ── States ────────────────────────────────────────────────────────────────
+
+  &--loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inline-size: 1em;
+      block-size: 1em;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      animation: spin 0.7s linear infinite;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+        content: '…';
+        color: inherit;
+      }
+    }
+  }
+
+  &:disabled,
+  &.is-disabled {
+    @include disabled;
+  }
+
+  // ── Icon helpers ──────────────────────────────────────────────────────────
+  svg {
+    inline-size: 1em;
+    block-size: 1em;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  &--secondary {
+  background-color: #dbeafe;       // was: var(--z-color-brand-subtle) — too faint
+  color: #1e40af;                  // dark blue text, not brand blue
+  border-color: #93c5fd;           // visible mid-blue border — was: transparent
+  
+  &:hover { background-color: #bfdbfe; border-color: #60a5fa; }
+}
+
+&--outline {
+  background-color: transparent;
+  color: var(--z-text-primary);    // neutral, not brand color
+  border-color: var(--z-border-default); // gray border — was same gray, but now clearly ≠ secondary
+  
+  &:hover { background-color: var(--z-bg-subtle); border-color: var(--z-border-strong); }
+}
+}
+
+// Button group
+.btn-group {
+  display: inline-flex;
+
+  > .btn {
+    border-radius: 0;
+
+    &:first-child  { border-start-start-radius: var(--component-radius); border-end-start-radius: var(--component-radius); }
+    &:last-child   { border-start-end-radius: var(--component-radius);   border-end-end-radius: var(--component-radius); }
+    &:not(:last-child) { border-inline-end-width: 0; }
+  }
+}

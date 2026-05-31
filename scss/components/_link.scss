@@ -1,0 +1,91 @@
+// =============================================================================
+// ui / components / _link.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+.link {
+  @include focus-ring;
+  @include transition(color text-decoration-color);
+
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 2px;
+  border-radius: var(--radius-xs);
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+
+  // Subtle (secondary)
+  &--subtle {
+    color: var(--text-secondary);
+    text-decoration-color: transparent;
+
+    &:hover {
+      color: var(--text-primary);
+      text-decoration-color: currentColor;
+    }
+  }
+
+  // Always underlined
+  &--underline {
+    text-decoration-color: currentColor;
+  }
+
+  // Inline icon links
+  &--icon {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+
+    svg { inline-size: 1em; block-size: 1em; }
+  }
+
+  // External (arrow or icon added via CSS)
+  &--external::after {
+    content: '↗';
+    font-size: 0.75em;
+    margin-inline-start: 2px;
+    vertical-align: super;
+  }
+}
+
+// Badge / chip (inline label)
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding-block: 2px;
+  padding-inline: var(--space-xs);
+
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-none);
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+
+  &--brand   { background-color: var(--color-brand-subtle);  color: var(--color-brand);   border-color: transparent; }
+  &--success { background-color: var(--color-success-bg);    color: var(--color-success); border-color: transparent; }
+  &--danger  { background-color: var(--color-danger-bg);     color: var(--color-danger);  border-color: transparent; }
+  &--warning { background-color: var(--color-warning-bg);    color: var(--color-warning); border-color: transparent; }
+  &--info    { background-color: var(--color-info-bg);       color: var(--color-info);    border-color: transparent; }
+
+  &--dot {
+    &::before {
+      content: '';
+      display: block;
+      inline-size: 6px;
+      block-size: 6px;
+      border-radius: 50%;
+      background-color: currentColor;
+      flex-shrink: 0;
+    }
+  }
+}

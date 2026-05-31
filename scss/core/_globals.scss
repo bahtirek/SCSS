@@ -1,0 +1,106 @@
+// =============================================================================
+// ui / core / _globals.scss
+// =============================================================================
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+}
+
+// Headings — semantic defaults, overridable via utilities
+h1 { font-size: var(--text-4xl); font-weight: var(--font-bold);     line-height: var(--leading-tight); }
+h2 { font-size: var(--text-3xl); font-weight: var(--font-semibold); line-height: var(--leading-tight); }
+h3 { font-size: var(--text-2xl); font-weight: var(--font-semibold); line-height: var(--leading-snug);  }
+h4 { font-size: var(--text-xl);  font-weight: var(--font-semibold); line-height: var(--leading-snug);  }
+h5 { font-size: var(--text-lg);  font-weight: var(--font-medium);   line-height: var(--leading-normal);}
+h6 { font-size: var(--text-base);font-weight: var(--font-medium);   line-height: var(--leading-normal);}
+
+// Paragraph
+p {
+  max-inline-size: 72ch;
+  color: var(--text-secondary);
+}
+
+// Inline code
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding-inline: var(--space-xs);
+  padding-block: 1px;
+}
+
+// Pre-formatted block
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  overflow-x: auto;
+
+  code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+  }
+}
+
+// Horizontal rule
+hr {
+  border: none;
+  border-block-start: 1px solid var(--border-subtle);
+  margin-block: var(--space-lg);
+}
+
+// Blockquote
+blockquote {
+  border-inline-start: 3px solid var(--color-brand);
+  padding-inline-start: var(--space-md);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+// Small
+small {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+// Strong / em
+strong { font-weight: var(--font-semibold); }
+em     { font-style: italic; }
+
+// Mark
+mark {
+  background-color: rgb(from var(--color-warning) r g b / 0.2);
+  color: var(--text-primary);
+  border-radius: var(--radius-xs);
+  padding-inline: 2px;
+}
+
+// Keyboard
+kbd {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  padding-inline: var(--space-xs);
+  padding-block: 2px;
+}
+
+// Selection
+::selection {
+  background-color: rgb(from var(--color-brand) r g b / 0.2);
+  color: var(--text-primary);
+}

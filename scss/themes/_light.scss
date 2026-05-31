@@ -1,0 +1,56 @@
+// =============================================================================
+// ui / themes / _light.scss
+// =============================================================================
+// Default (light) theme. Applied to :root. Override with [data-theme="dark"].
+// =============================================================================
+
+@use '../tokens/colors' as *;
+@use 'sass:map';
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  // Surface
+  --bg-base:          #{map.get($color-neutral, 0)};
+  --bg-subtle:        #{map.get($color-neutral, 50)};
+  --bg-elevated:      #{map.get($color-neutral, 0)};
+  --bg-overlay:       rgba(0, 0, 0, 0.4);
+
+  // Border
+  --border-default:   #{map.get($color-neutral, 200)};
+  --border-strong:    #{map.get($color-neutral, 300)};
+  --border-subtle:    #{map.get($color-neutral, 100)};
+
+  // Text
+  --text-primary:     #{map.get($color-neutral, 900)};
+  --text-secondary:   #{map.get($color-neutral, 600)};
+  --text-tertiary:    #{map.get($color-neutral, 400)};
+  --text-disabled:    #{map.get($color-neutral, 300)};
+  --text-inverse:     #{map.get($color-neutral, 0)};
+  --text-on-brand:    #{map.get($color-neutral, 0)};
+
+  // Brand
+  --color-brand:        #{map.get($color-blue, 600)};
+  --color-brand-hover:  #{map.get($color-blue, 700)};
+  --color-brand-subtle: #{map.get($color-blue, 50)};
+
+  // Semantic
+  --color-success:    #{map.get($color-green, 600)};
+  --color-success-bg: #{map.get($color-green, 50)};
+  --color-danger:     #{map.get($color-red, 600)};
+  --color-danger-bg:  #{map.get($color-red, 50)};
+  --color-warning:    #{map.get($color-yellow, 600)};
+  --color-warning-bg: #{map.get($color-yellow, 50)};
+  --color-info:       #{map.get($color-blue, 600)};
+  --color-info-bg:    #{map.get($color-blue, 50)};
+
+  // Focus
+  --color-focus: #{map.get($color-blue, 500)};
+
+  // Input chrome
+  --input-bg:           #{map.get($color-neutral, 0)};
+  --input-border:       #{map.get($color-neutral, 200)};
+  --input-border-focus: #{map.get($color-blue, 500)};
+  --input-placeholder:  #{map.get($color-neutral, 400)};
+}

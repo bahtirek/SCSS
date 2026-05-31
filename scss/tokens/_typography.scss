@@ -1,0 +1,72 @@
+// =============================================================================
+// ui / tokens / _typography.scss
+// =============================================================================
+@use 'sass:map';
+
+$font-family: (
+  sans:  ('Inter', 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif),
+  mono:  ('Geist Mono', 'Fira Code', ui-monospace, 'Cascadia Code', monospace),
+  serif: (ui-serif, Georgia, serif),
+) !default;
+
+$font-size: (
+  xs:   0.75rem,    // 12px
+  sm:   0.875rem,   // 14px
+  base: 1rem,       // 16px
+  lg:   1.125rem,   // 18px
+  xl:   1.25rem,    // 20px
+  2xl:  1.5rem,     // 24px
+  3xl:  1.875rem,   // 30px
+  4xl:  2.25rem,    // 36px
+  5xl:  3rem,       // 48px
+) !default;
+
+$font-weight: (
+  light:    300,
+  normal:   400,
+  medium:   500,
+  semibold: 600,
+  bold:     700,
+  extrabold: 800,
+) !default;
+
+$line-height: (
+  none:    1,
+  tight:   1.25,
+  snug:    1.375,
+  normal:  1.5,
+  relaxed: 1.625,
+  loose:   2,
+) !default;
+
+$letter-spacing: (
+  tighter: -0.05em,
+  tight:   -0.025em,
+  normal:   0,
+  wide:     0.025em,
+  wider:    0.05em,
+  widest:   0.1em,
+) !default;
+
+// Expose as CSS custom properties
+:root {
+  --font-sans:  #{map.get($font-family, sans)};
+  --font-mono:  #{map.get($font-family, mono)};
+  --font-serif: #{map.get($font-family, serif)};
+
+  @each $key, $value in $font-size {
+    --text-#{$key}: #{$value};
+  }
+
+  @each $key, $value in $font-weight {
+    --font-#{$key}: #{$value};
+  }
+
+  @each $key, $value in $line-height {
+    --leading-#{$key}: #{$value};
+  }
+
+  @each $key, $value in $letter-spacing {
+    --tracking-#{$key}: #{$value};
+  }
+}

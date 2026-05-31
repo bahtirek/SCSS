@@ -1,0 +1,72 @@
+// =============================================================================
+// ui / layout / _grid.scss
+// =============================================================================
+
+@use '../tokens/breakpoints' as *;
+@use '../tokens/spacing' as *;
+@use '../core/mixins' as m;
+
+// Base grid
+.grid {
+  display: grid;
+}
+
+// Column counts 1–12
+@for $i from 1 through 12 {
+  .grid-#{$i} {
+    display: grid;
+    grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+  }
+}
+
+// Responsive grid columns
+
+@each $bp, $val in $breakpoints {
+  @media (min-width: $val) {
+    @for $i from 1 through 12 {
+      #{m.rsel($bp, 'grid-#{$i}')} {
+        display: grid;
+        grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+      }
+    }
+  }
+}
+
+// Column span
+@for $i from 1 through 12 {
+  .col-span-#{$i} { grid-column: span #{$i} / span #{$i}; }
+}
+
+.col-span-full { grid-column: 1 / -1; }
+
+// Row span
+@for $i from 1 through 6 {
+  .row-span-#{$i} { grid-row: span #{$i} / span #{$i}; }
+}
+
+// Auto flow
+.grid-flow-row    { grid-auto-flow: row; }
+.grid-flow-col    { grid-auto-flow: column; }
+.grid-flow-dense { grid-auto-flow: dense; }
+
+// Gap — reuse spacing tokens
+@each $key, $spval in $spacing {
+  @if $key != 'auto' {
+    .grid-gap-#{$key} { gap: $spval; }
+  }
+}
+
+// Subgrid helpers
+.subgrid-cols { grid-template-columns: subgrid; }
+.subgrid-rows { grid-template-rows: subgrid; }
+
+// Auto-fill / auto-fit responsive grid
+// Usage: .auto-grid-sm will create as-many columns as fit at min 12rem each
+$_auto-grid-sizes: (sm: 12rem, md: 16rem, lg: 20rem, xl: 24rem);
+
+@each $key, $min in $_auto-grid-sizes {
+  .auto-grid-#{$key} {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(#{$min}, 100%), 1fr));
+  }
+}

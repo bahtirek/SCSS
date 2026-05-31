@@ -1,0 +1,156 @@
+// =============================================================================
+// ui / core / _mixins.scss
+// =============================================================================
+
+@use 'sass:map';
+@use '../tokens/breakpoints' as *;
+@use 'sass:string';
+@use 'sass:map' as smap;
+
+// ── Responsive breakpoint ─────────────────────────────────────────────────────
+// Usage: @include bp(md) { ... }
+@mixin bp($key) {
+  $value: map.get($breakpoints, $key);
+
+  @if $value == null {
+    @error "ui: Unknown breakpoint `#{$key}`. Available: #{map.keys($breakpoints)}.";
+  }
+
+  @media (min-width: #{$value}) {
+    @content;
+  }
+}
+
+// ── Max-width breakpoint (down) ───────────────────────────────────────────────
+@mixin bp-down($key) {
+  $value: map.get($breakpoints, $key);
+
+  @if $value == null {
+    @error "ui: Unknown breakpoint `#{$key}`.";
+  }
+
+  @media (max-width: calc(#{$value} - 1px)) {
+    @content;
+  }
+}
+
+// ── Focus visible ring ────────────────────────────────────────────────────────
+@mixin focus-ring($color: var(--color-focus), $offset: 2px) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: $offset;
+  }
+}
+
+// ── Truncate text ─────────────────────────────────────────────────────────────
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Visually hidden (accessible) ──────────────────────────────────────────────
+@mixin sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// ── Flex center shorthand ─────────────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ── Absolute fill ─────────────────────────────────────────────────────────────
+@mixin cover {
+  position: absolute;
+  inset: 0;
+}
+
+// ── Interactive base (cursor, user-select) ────────────────────────────────────
+@mixin interactive {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// ── Disabled state ────────────────────────────────────────────────────────────
+@mixin disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// ── Surface (bg + border + shadow) ───────────────────────────────────────────
+@mixin surface($shadow: sm) {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--component-radius);
+  box-shadow: var(--shadow-#{$shadow});
+}
+
+// ── Transition shorthand ──────────────────────────────────────────────────────
+@mixin transition($props: all, $speed: base) {
+  transition-property: $props;
+  transition-duration: var(--transition-#{$speed});
+  transition-timing-function: ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// ── Generate responsive utility variants ──────────────────────────────────────
+// Usage: @include responsive-variants { ... content uses $bp-prefix var ... }
+//
+// This mixin is a lower-level building block. Responsive utilities are
+// generated directly in utilities/_responsive.scss using @each loops.
+@mixin responsive-variants {
+  // Base (no prefix)
+  @content;
+
+  // Breakpoint-prefixed variants
+  @each $bp, $value in $breakpoints {
+    @media (min-width: #{$value}) {
+      $bp-prefix: '#{$bp}\\:' !global;
+      @content;
+      $bp-prefix: '' !global;
+    }
+  }
+}
+
+// ── Responsive selector builder ───────────────────────────────────────────────
+// CSS class names cannot start with a digit. The breakpoint "2xl" needs its
+// leading "2" escaped as \32  (hex 32 = ASCII "2"; the trailing space is
+// required by CSS to terminate the unicode escape sequence).
+//
+// Usage:  #{rsel('2xl', 'flex')}  → .\32 xl\:flex
+//         #{rsel('lg',  'flex')}  → .lg\:flex
+
+@function rsel($bp, $suffix) {
+  $bp-str: '#{$bp}';
+  $first: string.slice($bp-str, 1, 1);
+
+  // Map digit → CSS hex escape (only leading digit matters for our breakpoints)
+  $hex-map: (
+    '0': '30', '1': '31', '2': '32', '3': '33', '4': '34',
+    '5': '35', '6': '36', '7': '37', '8': '38', '9': '39',
+  );
+
+  @if smap.has-key($hex-map, $first) {
+    $hex:  smap.get($hex-map, $first);
+    $rest: string.slice($bp-str, 2);
+    // NOTE: the space after #{$hex} is intentional — CSS unicode escape terminator
+    @return string.unquote(".\\#{$hex} #{$rest}\\:#{$suffix}");
+  }
+
+  @return string.unquote(".#{$bp-str}\\:#{$suffix}");
+}

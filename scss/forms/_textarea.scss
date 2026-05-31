@@ -1,0 +1,20 @@
+// =============================================================================
+// ui / forms / _textarea.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+@use 'input' as i;
+
+.textarea {
+  @include i.input-base;
+
+  &:invalid:not(:placeholder-shown) { @include i.input-invalid; }
+  .is-invalid & { @include i.input-invalid; }
+
+  min-block-size: 6rem;
+  resize: vertical;
+  field-sizing: content; // auto-grow where supported
+
+  &--no-resize         { resize: none; }
+  &--horizontal-resize { resize: horizontal; }
+}

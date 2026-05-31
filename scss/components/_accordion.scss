@@ -1,0 +1,107 @@
+// =============================================================================
+// ui / components / _accordion.scss
+// =============================================================================
+// CSS-only animation. JS toggles .is-open on .accordion__item.
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid var(--border-default);
+  border-radius: var(--component-radius);
+  overflow: hidden;
+
+  &__item {
+    border-block-end: 1px solid var(--border-subtle);
+
+    &:last-child { border-block-end: none; }
+  }
+
+  &__trigger {
+    @include interactive;
+    @include transition(background-color);
+    @include focus-ring;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+
+    inline-size: 100%;
+    padding: var(--space-md) var(--space-lg);
+
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+    text-align: start;
+
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--bg-subtle);
+    }
+
+    // Chevron icon
+    &__icon {
+      inline-size: 1rem;
+      block-size: 1rem;
+      flex-shrink: 0;
+      color: var(--text-tertiary);
+      @include transition(transform);
+    }
+  }
+
+  &__item.is-open > &__trigger &__trigger__icon,
+  &__item[open] > summary &__trigger__icon {
+    transform: rotate(180deg);
+  }
+
+  &__content {
+    overflow: hidden;
+    max-block-size: 0;
+    @include transition(max-block-size, slow);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  &__item.is-open > &__content {
+    max-block-size: 60rem; // JS or browser sets real height
+  }
+
+  &__body {
+    padding: var(--space-md) var(--space-lg) var(--space-lg);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  // ── Modifiers ─────────────────────────────────────────────────────────────
+
+  &--flush {
+    border: none;
+    border-radius: 0;
+
+    .accordion__item {
+      border-inline: none;
+      border-block-end: 1px solid var(--border-subtle);
+
+      &:last-child { border-block-end: none; }
+    }
+  }
+
+  // Native <details>/<summary> support
+  details.accordion__item {
+    summary.accordion__trigger {
+      list-style: none;
+    }
+
+    &[open] .accordion__content {
+      max-block-size: 60rem;
+    }
+  }
+}

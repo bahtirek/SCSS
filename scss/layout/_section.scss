@@ -1,0 +1,16 @@
+// =============================================================================
+// ui / layout / _section.scss
+// =============================================================================
+
+.section {
+  padding-block: var(--space-xxl);
+
+  &--sm  { padding-block: var(--space-lg); }
+  &--lg  { padding-block: var(--space-xxxl); }
+  &--flush { padding-block: 0; }
+}
+
+// Divider between sections
+.section + .section {
+  border-block-start: 1px solid var(--border-subtle);
+}

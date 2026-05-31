@@ -1,0 +1,97 @@
+// =============================================================================
+// ui / themes / _dark.scss
+// =============================================================================
+
+@use '../tokens/colors' as *;
+@use 'sass:map';
+
+[data-theme='dark'],
+.dark {
+  color-scheme: dark;
+
+  // Surface
+  --bg-base:          #{map.get($color-neutral, 950)};
+  --bg-subtle:        #{map.get($color-neutral, 900)};
+  --bg-elevated:      #{map.get($color-neutral, 800)};
+  --bg-overlay:       rgba(0, 0, 0, 0.65);
+
+  // Border
+  --border-default:   #{map.get($color-neutral, 700)};
+  --border-strong:    #{map.get($color-neutral, 600)};
+  --border-subtle:    #{map.get($color-neutral, 800)};
+
+  // Text
+  --text-primary:     #{map.get($color-neutral, 50)};
+  --text-secondary:   #{map.get($color-neutral, 400)};
+  --text-tertiary:    #{map.get($color-neutral, 600)};
+  --text-disabled:    #{map.get($color-neutral, 700)};
+  --text-inverse:     #{map.get($color-neutral, 950)};
+  --text-on-brand:    #{map.get($color-neutral, 0)};
+
+  // Brand (slightly lighter for dark surfaces)
+  --color-brand:        #{map.get($color-blue, 400)};
+  --color-brand-hover:  #{map.get($color-blue, 300)};
+  --color-brand-subtle: rgba(#{map.get($color-blue, 400)}, 0.12);
+
+  // Semantic
+  --color-success:    #{map.get($color-green, 500)};
+  --color-success-bg: rgba(#{map.get($color-green, 500)}, 0.1);
+  --color-danger:     #{map.get($color-red, 400)};
+  --color-danger-bg:  rgba(#{map.get($color-red, 400)}, 0.1);
+  --color-warning:    #{map.get($color-yellow, 500)};
+  --color-warning-bg: rgba(#{map.get($color-yellow, 500)}, 0.1);
+  --color-info:       #{map.get($color-blue, 400)};
+  --color-info-bg:    rgba(#{map.get($color-blue, 400)}, 0.1);
+
+  // Focus
+  --color-focus: #{map.get($color-blue, 400)};
+
+  // Input chrome
+  --input-bg:           #{map.get($color-neutral, 900)};
+  --input-border:       #{map.get($color-neutral, 700)};
+  --input-border-focus: #{map.get($color-blue, 400)};
+  --input-placeholder:  #{map.get($color-neutral, 600)};
+}
+
+// Auto dark mode — respects OS setting if no data-theme is set
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg-base:          #{map.get($color-neutral, 950)};
+    --bg-subtle:        #{map.get($color-neutral, 900)};
+    --bg-elevated:      #{map.get($color-neutral, 800)};
+    --bg-overlay:       rgba(0, 0, 0, 0.65);
+
+    --border-default:   #{map.get($color-neutral, 700)};
+    --border-strong:    #{map.get($color-neutral, 600)};
+    --border-subtle:    #{map.get($color-neutral, 800)};
+
+    --text-primary:     #{map.get($color-neutral, 50)};
+    --text-secondary:   #{map.get($color-neutral, 400)};
+    --text-tertiary:    #{map.get($color-neutral, 600)};
+    --text-disabled:    #{map.get($color-neutral, 700)};
+    --text-inverse:     #{map.get($color-neutral, 950)};
+    --text-on-brand:    #{map.get($color-neutral, 0)};
+
+    --color-brand:        #{map.get($color-blue, 400)};
+    --color-brand-hover:  #{map.get($color-blue, 300)};
+    --color-brand-subtle: rgba(#{map.get($color-blue, 400)}, 0.12);
+
+    --color-success:    #{map.get($color-green, 500)};
+    --color-success-bg: rgba(#{map.get($color-green, 500)}, 0.1);
+    --color-danger:     #{map.get($color-red, 400)};
+    --color-danger-bg:  rgba(#{map.get($color-red, 400)}, 0.1);
+    --color-warning:    #{map.get($color-yellow, 500)};
+    --color-warning-bg: rgba(#{map.get($color-yellow, 500)}, 0.1);
+    --color-info:       #{map.get($color-blue, 400)};
+    --color-info-bg:    rgba(#{map.get($color-blue, 400)}, 0.1);
+
+    --color-focus: #{map.get($color-blue, 400)};
+
+    --input-bg:           #{map.get($color-neutral, 900)};
+    --input-border:       #{map.get($color-neutral, 700)};
+    --input-border-focus: #{map.get($color-blue, 400)};
+    --input-placeholder:  #{map.get($color-neutral, 600)};
+  }
+}

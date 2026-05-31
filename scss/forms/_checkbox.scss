@@ -1,0 +1,131 @@
+// =============================================================================
+// ui / forms / _checkbox.scss  &  _radio.scss
+// Combined into one file for shared base styles.
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+// ── Shared base ───────────────────────────────────────────────────────────────
+%check-base {
+  @include interactive;
+  @include transition(background-color border-color box-shadow);
+
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+
+  inline-size: 1rem;
+  block-size: 1rem;
+  flex-shrink: 0;
+
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  box-shadow: var(--shadow-xs);
+  outline: none;
+
+  &:hover:not(:disabled) {
+    border-color: var(--border-strong);
+  }
+
+  &:focus-visible {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px rgb(from var(--color-focus) r g b / 0.15);
+  }
+
+  &:checked {
+    background-color: var(--color-brand);
+    border-color: var(--color-brand);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:indeterminate {
+    background-color: var(--color-brand);
+    border-color: var(--color-brand);
+  }
+}
+
+// ── Checkbox ──────────────────────────────────────────────────────────────────
+.checkbox {
+  @extend %check-base;
+  border-radius: var(--radius-sm);
+
+  &::before {
+    content: '';
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    background-color: white;
+    transform: scale(0);
+    @include transition(transform);
+  }
+
+  &:checked::before  { transform: scale(1); }
+  &:indeterminate::before {
+    clip-path: none;
+    inline-size: 0.625rem;
+    block-size: 1.5px;
+    border-radius: 1px;
+    transform: scale(1);
+  }
+}
+
+// ── Radio ─────────────────────────────────────────────────────────────────────
+.radio {
+  @extend %check-base;
+  border-radius: var(--radius-full);
+
+  &::before {
+    content: '';
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: 50%;
+    background-color: white;
+    transform: scale(0);
+    @include transition(transform);
+  }
+
+  &:checked::before { transform: scale(1); }
+}
+
+// ── Check / Radio label row ───────────────────────────────────────────────────
+// Usage: <label class="check-label"><input class="checkbox"> Label text</label>
+.check-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  line-height: var(--leading-snug);
+
+  input[disabled] ~ & { cursor: not-allowed; }
+
+  &:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &__description {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    margin-block-start: 2px;
+  }
+}
+
+// ── Check group (vertical or inline) ──────────────────────────────────────────
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  &--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+}

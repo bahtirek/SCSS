@@ -1,0 +1,75 @@
+// =============================================================================
+// ui / core / _animations.scss
+// =============================================================================
+// Minimal, purposeful keyframes only. Components reference these by name.
+// All motion respects prefers-reduced-motion.
+// =============================================================================
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0);   }
+  }
+
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1);    }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+  }
+
+  @keyframes skeleton {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+// Utility animation classes
+.animate-fade-in    { animation: fade-in  var(--transition-slow) both; }
+.animate-slide-up   { animation: slide-up var(--transition-slow) both; }
+.animate-scale-in   { animation: scale-in var(--transition-slow) both; }
+.animate-spin       { animation: spin 1s linear infinite; }
+.animate-pulse      { animation: pulse 2s ease-in-out infinite; }
+
+// Skeleton loader helper
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-subtle) 25%,
+    var(--bg-elevated) 50%,
+    var(--bg-subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+// Respect reduced motion for all ui animations
+@media (prefers-reduced-motion: reduce) {
+  [class*='animate-'],
+  .skeleton {
+    animation: none;
+  }
+}

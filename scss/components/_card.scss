@@ -1,0 +1,112 @@
+// =============================================================================
+// ui / components / _card.scss
+// =============================================================================
+
+@use '../core/mixins' as *;
+
+.card {
+  @include surface(sm);
+
+  overflow: hidden;
+
+  // ── Parts ─────────────────────────────────────────────────────────────────
+
+  &__header {
+    padding: var(--space-md) var(--space-lg);
+    border-block-end: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  &__title {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  &__description {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-block-start: var(--space-xs);
+  }
+
+  &__body {
+    padding: var(--space-lg);
+  }
+
+  &__footer {
+    padding: var(--space-md) var(--space-lg);
+    border-block-start: 1px solid var(--border-subtle);
+    background-color: var(--bg-subtle);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  &__image {
+    inline-size: 100%;
+    block-size: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  // ── Modifiers ─────────────────────────────────────────────────────────────
+
+  &--flat {
+    box-shadow: none;
+  }
+
+  &--bordered {
+    box-shadow: none;
+    border-color: var(--border-default);
+  }
+
+  &--elevated {
+    box-shadow: var(--shadow-lg);
+  }
+
+  &--interactive {
+    @include interactive;
+    @include transition(box-shadow transform border-color);
+    @include focus-ring;
+
+    display: block;
+    text-decoration: none;
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+
+      @media (prefers-reduced-motion: reduce) {
+        transform: none;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  &--flush {
+    .card__body {
+      padding: 0;
+    }
+  }
+
+  // ── Horizontal layout ─────────────────────────────────────────────────────
+  &--horizontal {
+    display: flex;
+    flex-direction: row;
+
+    .card__image {
+      inline-size: 8rem;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+  }
+}

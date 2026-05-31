@@ -1,0 +1,75 @@
+// =============================================================================
+// ui / utilities / _typography.scss
+// =============================================================================
+
+@use '../tokens/typography' as *;
+
+// ── Font size ─────────────────────────────────────────────────────────────────
+@each $key, $val in $font-size {
+  .text-#{$key} { font-size: $val; }
+}
+
+// ── Font weight ───────────────────────────────────────────────────────────────
+@each $key, $val in $font-weight {
+  .font-#{$key} { font-weight: $val; }
+}
+
+// ── Line height ───────────────────────────────────────────────────────────────
+@each $key, $val in $line-height {
+  .leading-#{$key} { line-height: $val; }
+}
+
+// ── Letter spacing ────────────────────────────────────────────────────────────
+@each $key, $val in $letter-spacing {
+  .tracking-#{$key} { letter-spacing: $val; }
+}
+
+// ── Text alignment ────────────────────────────────────────────────────────────
+.text-left   { text-align: start; }
+.text-center { text-align: center; }
+.text-right  { text-align: end; }
+.text-justify{ text-align: justify; }
+
+// ── Text transform ────────────────────────────────────────────────────────────
+.uppercase   { text-transform: uppercase; }
+.lowercase   { text-transform: lowercase; }
+.capitalize  { text-transform: capitalize; }
+.normal-case { text-transform: none; }
+
+// ── Text decoration ───────────────────────────────────────────────────────────
+.underline     { text-decoration: underline; }
+.overline      { text-decoration: overline; }
+.line-through  { text-decoration: line-through; }
+.no-underline  { text-decoration: none; }
+
+// ── Text overflow ─────────────────────────────────────────────────────────────
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-wrap    { white-space: normal; }
+.text-nowrap  { white-space: nowrap; }
+.text-balance { text-wrap: balance; }
+.text-pretty  { text-wrap: pretty; }
+
+// ── Font family ───────────────────────────────────────────────────────────────
+.font-sans  { font-family: var(--font-sans); }
+.font-mono  { font-family: var(--font-mono); }
+.font-serif { font-family: var(--font-serif); }
+
+// ── Semantic text color helpers ───────────────────────────────────────────────
+.text-primary   { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary  { color: var(--text-tertiary); }
+.text-disabled  { color: var(--text-disabled); }
+.text-inverse   { color: var(--text-inverse); }
+.text-brand     { color: var(--color-brand); }
+.text-success   { color: var(--color-success); }
+.text-danger    { color: var(--color-danger); }
+.text-warning   { color: var(--color-warning); }
+
+// ── Italic ────────────────────────────────────────────────────────────────────
+.italic     { font-style: italic; }
+.not-italic { font-style: normal; }
