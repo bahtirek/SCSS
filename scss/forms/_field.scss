@@ -76,7 +76,7 @@
 
   // ── Disabled ──────────────────────────────────────────────────────────────
   &.is-disabled,
-  &:has(:disabled) {
+  &:has(select:disabled, input:disabled, textarea:disabled) {
     .field__label {
       color: var(--text-disabled);
     }

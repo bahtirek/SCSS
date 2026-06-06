@@ -8,7 +8,7 @@
 .select {
   @include i.input-base;
 
-  &:invalid:not(:placeholder-shown) { @include i.input-invalid; }
+  /* &:invalid:not(:placeholder-shown) { @include i.input-invalid; } */
   .is-invalid & { @include i.input-invalid; }
 
   padding-inline-end: 2.25rem; // room for chevron
